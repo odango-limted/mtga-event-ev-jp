@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.pyc
+
+# Streamlit
+.streamlit/
+!/.streamlit/config.toml # Keep config if we have one, but usually secrets.toml is ignored
+.streamlit/secrets.toml
+
+# Environment
+.venv/
+env/
+venv/
+*.env
+
+# IDE
+.vscode/
+.idea/
+
+# Agent Artifacts
+*.resolved
+*.metadata.json
+*.resolved.*
+*.0
+*.1
+*.2
+*.3
+*.4
+*.5
+*.6
+*.7
+*.8
+*.9
+*.10
+*.11
+*.12
+*.13
+*.14
+*.15
+*.16
+*.17
+*.18
+*.19
+task.md
+implementation_plan.md
+project_context.md
+feature_spec.md
+walkthrough.md

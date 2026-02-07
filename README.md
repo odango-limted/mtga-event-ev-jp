@@ -17,7 +17,7 @@ Streamlitを使用して構築されており、ユーザー独自の勝率や�
 
 ## デモ
 
-Streamlit Community Cloudで稼働中のデモ: [リンクがあればここに貼る]
+Streamlit Community Cloudで稼働中のデモ: [https://mtga-event-ev-jp-lwpucsrdr8od88yrutaewq.streamlit.app/]
 
 ## ローカルでの実行方法
 
@@ -37,19 +37,6 @@ Streamlit Community Cloudで稼働中のデモ: [リンクがあればここに�
    streamlit run app.py
    ```
 
-## Streamlit Community Cloud へのデプロイ方法
-
-1. [Streamlit Community Cloud](https://share.streamlit.io/) にアクセスし、GitHubアカウントでログインします。
-2. 右上の "New app" ボタンをクリックします。
-3. "Use existing repo" を選択します。
-4. 以下の設定を入力します:
-   - **Repository**: `odango-limted/mtga-event-ev-jp`
-   - **Branch**: `main`
-   - **Main file path**: `app.py`
-5. "Deploy!" をクリックします。
-
-※ デプロイが完了するまで数分かかる場合があります。
-
 ## 技術スタック
 
 - Python 3.11+
@@ -59,5 +46,5 @@ Streamlit Community Cloudで稼働中のデモ: [リンクがあればここに�
 - Numpy
 
 ## ライセンス
-
-[MIT License](LICENSE) (必要であれば追加)
+[MIT License]
+このツールは、ファンコンテンツ・ポリシーに沿った非公式のファンコンテンツです。ウィザーズ社の認可/許諾は得ていません。題材の一部に、ウィザーズ・オブ・ザ・コースト社の財産を含んでいます。©Wizards of the Coast LLC

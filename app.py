@@ -94,8 +94,22 @@ with st.container():
     if selected_preset_name != "カスタム設定":
         preset_data = constants.EVENT_PRESETS[selected_preset_name]
         
-        default_max_wins = preset_data["max_wins"]
-        default_max_losses = preset_data["max_losses"]
+        # Get event format type from preset
+        preset_event_format_type = preset_data.get("event_format_type", "normal")
+        
+        if preset_event_format_type == "fixed_rounds":
+            # Fixed rounds format
+            default_event_format_type = "fixed_rounds"
+            default_num_rounds = preset_data.get("num_rounds", 3)
+            default_max_wins = default_num_rounds  # For display purposes
+            default_max_losses = 3  # Dummy value
+        else:
+            # Normal format
+            default_event_format_type = "normal"
+            default_max_wins = preset_data.get("max_wins", 7)
+            default_max_losses = preset_data.get("max_losses", 3)
+            default_num_rounds = 3  # Dummy value
+        
         default_format = preset_data["format"]
         default_entry_gems = preset_data["entry_fee"].get("Gems", 0)
         default_entry_gold = preset_data["entry_fee"].get("Gold", 0)
@@ -109,12 +123,44 @@ with st.container():
         default_entry_gems = 0
         default_entry_gold = 0
         default_guaranteed_packs = 0
+        default_event_format_type = "normal"
+        default_num_rounds = 3
         preset_data = {}
 
-    # Event Parameters Inputs
-    max_wins = st.number_input("最大勝利数", min_value=1, max_value=15, value=default_max_wins)
-    max_losses = st.number_input("最大敗北数", min_value=1, max_value=5, value=default_max_losses)
+    # Event Format Type Selection
+    # When preset changes, update the format type
+    if 'last_preset' not in st.session_state:
+        st.session_state.last_preset = selected_preset_name
+        st.session_state.event_format_type = "通常形式（N勝/M敗抜け）" if default_event_format_type == "normal" else "固定ラウンド形式（スイスドロー風）"
+    elif st.session_state.last_preset != selected_preset_name:
+        # Preset changed, update to new preset's format
+        st.session_state.last_preset = selected_preset_name
+        st.session_state.event_format_type = "通常形式（N勝/M敗抜け）" if default_event_format_type == "normal" else "固定ラウンド形式（スイスドロー風）"
+    
+    # Initialize event_format_type in session state if not present
+    if 'event_format_type' not in st.session_state:
+        st.session_state.event_format_type = "通常形式（N勝/M敗抜け）" if default_event_format_type == "normal" else "固定ラウンド形式（スイスドロー風）"
+    
+    event_format_type = st.radio(
+        "イベント形式",
+        ["通常形式（N勝/M敗抜け）", "固定ラウンド形式（スイスドロー風）"],
+        key="event_format_type",
+        horizontal=True
+    )
+    
+    # Event Parameters Inputs (conditional based on format type)
+    if event_format_type == "通常形式（N勝/M敗抜け）":
+        max_wins = st.number_input("最大勝利数", min_value=1, max_value=15, value=default_max_wins)
+        max_losses = st.number_input("最大敗北数", min_value=1, max_value=5, value=default_max_losses)
+        num_rounds = None
+    else:
+        # 固定ラウンド形式
+        num_rounds = st.number_input("ラウンド数", min_value=1, max_value=10, value=default_num_rounds)
+        max_wins = num_rounds  # For payout table display
+        max_losses = None
+    
     match_format = st.radio("マッチ形式", ["BO1", "BO3"], index=0 if default_format == "BO1" else 1)
+
     
     st.subheader("参加費")
     c1, c2 = st.columns(2)
@@ -209,18 +255,55 @@ st.subheader("分析パラメーター")
 c_p1, c_p2 = st.columns(2)
 target_currency = c_p1.radio("表示通貨", ["Gems", "Yen"], horizontal=True, format_func=lambda x: "ジェム" if x == "Gems" else "円")
 
-user_game_wr = c_p2.slider(
-    "あなたのゲーム勝率 (%)", 
-    min_value=0.0, 
-    max_value=100.0, 
-    value=50.0, 
-    step=0.1,
-    format="%.1f%%"
-) / 100.0
+# Win rate control with slider and input box
+with c_p2:
+    st.write("あなたのゲーム勝率 (%)")
+    
+    # Use a single key for session state
+    if 'game_wr' not in st.session_state:
+        st.session_state.game_wr = 50.0
+    
+    # Slider
+    slider_wr = st.slider(
+        "ゲーム勝率スライダー", 
+        min_value=0.0, 
+        max_value=100.0, 
+        value=st.session_state.game_wr, 
+        step=0.1,
+        format="%.1f%%",
+        label_visibility="collapsed"
+    )
+    
+    # Number input
+    input_wr = st.number_input(
+        "勝率入力",
+        min_value=0.0,
+        max_value=100.0,
+        value=st.session_state.game_wr,
+        step=0.1,
+        format="%.1f",
+        label_visibility="collapsed"
+    )
+    
+    # Determine which value changed and update session state
+    # Priority: input box > slider (if both differ, use input)
+    if input_wr != st.session_state.game_wr:
+        st.session_state.game_wr = input_wr
+        st.rerun()
+    elif slider_wr != st.session_state.game_wr:
+        st.session_state.game_wr = slider_wr
+        st.rerun()
+
+user_game_wr = st.session_state.game_wr / 100.0
 
 # User Calculation
 user_match_wr = calculation.calculate_match_win_rate(user_game_wr, match_format)
-user_probs = calculation.simulate_event(user_match_wr, max_wins, max_losses)
+
+# Use appropriate simulation function based on event format type
+if event_format_type == "固定ラウンド形式（スイスドロー風）":
+    user_probs = calculation.simulate_fixed_rounds_event(user_match_wr, num_rounds)
+else:
+    user_probs = calculation.simulate_event(user_match_wr, max_wins, max_losses)
 user_ev = calculation.calculate_ev(user_probs, payouts_config, entry_cost_dict, currency_settings, target_currency)
 
 # Add guaranteed value
@@ -233,7 +316,12 @@ ev_results = []
 
 for wr in win_rates_range:
     match_wr = calculation.calculate_match_win_rate(wr, match_format)
-    final_probs = calculation.simulate_event(match_wr, max_wins, max_losses)
+    
+    # Use appropriate simulation function based on event format type
+    if event_format_type == "固定ラウンド形式（スイスドロー風）":
+        final_probs = calculation.simulate_fixed_rounds_event(match_wr, num_rounds)
+    else:
+        final_probs = calculation.simulate_event(match_wr, max_wins, max_losses)
     ev = calculation.calculate_ev(final_probs, payouts_config, entry_cost_dict, currency_settings, target_currency)
     ev += guaranteed_val_converted # Add here too
     ev_results.append(ev)

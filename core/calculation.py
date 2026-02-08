@@ -78,6 +78,39 @@ def simulate_event(match_win_rate, max_wins, max_losses):
         
     return results
 
+def simulate_fixed_rounds_event(match_win_rate, num_rounds):
+    """
+    固定ラウンド数のイベント（スイスドロー風）の確率分布を計算。
+    
+    全てのプレイヤーが必ずnum_rounds回のマッチをプレイする形式。
+    結果は0勝からnum_rounds勝までのいずれかに収束する。
+    
+    Args:
+        match_win_rate (float): マッチ勝率 (0.0 to 1.0)
+        num_rounds (int): プレイするラウンド数（例: 3）
+    
+    Returns:
+        dict: 勝利数 -> 確率のマッピング
+              例: num_rounds=3, match_win_rate=0.5の場合
+              {0: 0.125, 1: 0.375, 2: 0.375, 3: 0.125}
+    """
+    results = {}
+    
+    # 二項分布を使用: P(k勝) = C(n,k) * p^k * (1-p)^(n-k)
+    # C(n,k) = n! / (k! * (n-k)!)
+    p = match_win_rate
+    
+    for k in range(num_rounds + 1):
+        # 組み合わせ数を計算
+        from math import comb
+        binomial_coeff = comb(num_rounds, k)
+        
+        # 確率を計算
+        prob = binomial_coeff * (p ** k) * ((1 - p) ** (num_rounds - k))
+        results[k] = prob
+    
+    return results
+
 def calculate_ev(event_probs, payouts, costs, currency_settings, target_currency="Gems"):
     """
     Calculates the Expected Value (EV) of the event.

@@ -28,8 +28,8 @@ EVENT_PRESETS = {
         ]
     },
     "マッチ・ドラフト": {
-        "max_wins": 3,
-        "max_losses": 3, # Actually matches are fixed to 3 usually, but let's treat as max wins 3
+        "event_format_type": "fixed_rounds",
+        "num_rounds": 3,
         "format": "BO3", 
         "guaranteed_packs": 3,
         "entry_fee": {"Gems": 1500, "Gold": 10000},

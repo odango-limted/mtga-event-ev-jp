@@ -128,7 +128,7 @@ EVENT_PRESETS = {
     },
     "リミテッド予選 Day2 (Draft Two)": {
         "max_wins": 6,
-        "max_losses": 3,
+        "max_losses": 2,
         "format": "BO1",
         "guaranteed_packs": 3,
         "entry_fee": {"Gems": 0},

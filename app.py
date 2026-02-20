@@ -55,6 +55,13 @@ with st.sidebar.expander("通貨価値設定", expanded=True):
         step=1000
     )
 
+    usd_to_yen = st.number_input(
+        "1 USDあたりの円 (ドル円レート)",
+        value=constants.DEFAULT_CURRENCY_SETTINGS.get("usd_to_yen", 150.0),
+        step=1.0,
+        format="%.1f"
+    )
+
     rare_value_gems = st.number_input(
         "ドラフト/シールド等で取得するレアカードの価値 (ジェム)",
         value=0, # Default 0 as requested "fixed value might be ok" but user said 1.4 rares... let's default to 0 and let user set it. Or maybe 20? 
@@ -72,6 +79,7 @@ currency_settings = {
     "pip_to_gems": pip_value_gems,
     "box_to_yen": box_value_yen,
     "collector_box_to_yen": collector_box_value_yen,
+    "usd_to_yen": usd_to_yen,
 }
 
 # --- Sidebar: Links ---
@@ -197,7 +205,7 @@ with st.container():
 
     # Initialize generic payout structure for DataEditor
     data_rows = []
-    keys = ["Gems", "Packs", "PIP", "Gold", "Box", "Collector Box"]
+    keys = ["Gems", "Packs", "PIP", "Gold", "Box", "Collector Box", "USD"]
     
     current_payouts_dict = {item['wins']: item for item in payout_list}
     
@@ -222,6 +230,7 @@ with st.container():
             "Gold": st.column_config.NumberColumn("ゴールド", min_value=0, step=100),
             "Box": st.column_config.NumberColumn("ボックス", min_value=0, step=1),
             "Collector Box": st.column_config.NumberColumn("コレクターボックス", min_value=0, step=1),
+            "USD": st.column_config.NumberColumn("USD", min_value=0, step=100),
         },
         disabled=["Wins"],
         use_container_width=True

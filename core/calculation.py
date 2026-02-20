@@ -172,6 +172,12 @@ def convert_currency(amount, from_curr, to_curr, settings):
              value_in_gems = yen_val / settings.get("gems_to_yen")
          else:
              value_in_gems = 0
+    elif from_curr == "USD":
+         yen_val = amount * settings.get("usd_to_yen", 150.0)
+         if settings.get("gems_to_yen", 0) > 0:
+             value_in_gems = yen_val / settings.get("gems_to_yen")
+         else:
+             value_in_gems = 0
     else:
         # Fallback for unknown types or direct gems
         value_in_gems = 0 

@@ -6,6 +6,7 @@ DEFAULT_CURRENCY_SETTINGS = {
     "pip_to_gems": 200,   # Rough estimate, needs user adjustment
     "box_to_yen": 15000,  # Example play booster box price
     "collector_box_to_yen": 35000, # Example collector booster box price
+    "usd_to_yen": 150.0,  # USD to JPY exchange rate
 }
 
 # Event Presets
@@ -106,6 +107,39 @@ EVENT_PRESETS = {
             {"wins": 5, "Gems": 10800, "Packs": 24},
             {"wins": 6, "Gems": 14400, "Packs": 32},
             {"wins": 7, "Gems": 0, "Collector Box": 1},
+        ]
+    },
+    "リミテッド予選 Day1 (Draft One)": {
+        "max_wins": 7,
+        "max_losses": 2,
+        "format": "BO1",
+        "guaranteed_packs": 3,
+        "entry_fee": {"Gems": 5000, "Gold": 25000},
+        "payouts": [
+            {"wins": 0, "Gems": 0},
+            {"wins": 1, "Gems": 0},
+            {"wins": 2, "Gems": 0},
+            {"wins": 3, "Gems": 0},
+            {"wins": 4, "Gems": 1000},
+            {"wins": 5, "Gems": 2500},
+            {"wins": 6, "Gems": 5000},
+            {"wins": 7, "Gems": 5500},
+        ]
+    },
+    "リミテッド予選 Day2 (Draft Two)": {
+        "max_wins": 6,
+        "max_losses": 3,
+        "format": "BO1",
+        "guaranteed_packs": 3,
+        "entry_fee": {"Gems": 0},
+        "payouts": [
+            {"wins": 0, "Gems": 0},
+            {"wins": 1, "Gems": 6500},
+            {"wins": 2, "Gems": 7500},
+            {"wins": 3, "Gems": 8500},
+            {"wins": 4, "Gems": 10000},
+            {"wins": 5, "Gems": 10000, "USD": 1000},
+            {"wins": 6, "Gems": 10000, "USD": 2000},
         ]
     },
 }

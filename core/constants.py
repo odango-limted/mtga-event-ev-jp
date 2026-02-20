@@ -138,8 +138,8 @@ EVENT_PRESETS = {
             {"wins": 2, "Gems": 7500},
             {"wins": 3, "Gems": 8500},
             {"wins": 4, "Gems": 10000},
-            {"wins": 5, "Gems": 10000, "USD": 1000},
-            {"wins": 6, "Gems": 10000, "USD": 2000},
+            {"wins": 5, "USD": 1000},
+            {"wins": 6, "USD": 2000},
         ]
     },
 }

@@ -3,6 +3,7 @@ DEFAULT_CURRENCY_SETTINGS = {
     "gems_to_yen": 0.75,  # Example: 20000 gems = 15000 yen approx
     "gold_to_gems": 0.15, # Standard draft buying rate (10000 gold = 1500 gems)
     "pack_to_gems": 30,   # Conservative value (duplicate protection for rare)
+    "mythic_pack_to_gems": 40, # Fixed value for mythic packs
     "pip_to_gems": 200,   # Rough estimate, needs user adjustment
     "box_to_yen": 15000,  # Example play booster box price
     "collector_box_to_yen": 35000, # Example collector booster box price
@@ -58,6 +59,23 @@ EVENT_PRESETS = {
             {"wins": 7, "Gems": 950, "Packs": 2.00},
         ]
     },
+    "コンテンダー・ドラフト": {
+        "max_wins": 7,
+        "max_losses": 3,
+        "format": "BO1",
+        "guaranteed_packs": 3,
+        "entry_fee": {"Gems": 3000},
+        "payouts": [
+            {"wins": 0, "Gems": 0, "Packs": 0, "Mythic Packs": 0},
+            {"wins": 1, "Gems": 0, "Packs": 0, "Mythic Packs": 0},
+            {"wins": 2, "Gems": 0, "Packs": 0, "Mythic Packs": 0},
+            {"wins": 3, "Gems": 1400, "Packs": 3, "Mythic Packs": 0},
+            {"wins": 4, "Gems": 2800, "Packs": 6, "Mythic Packs": 0},
+            {"wins": 5, "Gems": 3200, "Packs": 8, "Mythic Packs": 0},
+            {"wins": 6, "Gems": 4200, "Packs": 10, "Mythic Packs": 4},
+            {"wins": 7, "Gems": 7200, "Packs": 12, "Mythic Packs": 10}, 
+        ]
+    },
     "構築イベント (BO1)": {
         "max_wins": 7,
         "max_losses": 3,
@@ -67,12 +85,12 @@ EVENT_PRESETS = {
         "payouts": [
             {"wins": 0, "Gems": 25, "Packs": 0},
             {"wins": 1, "Gems": 50, "Packs": 0},
-            {"wins": 2, "Gems": 75, "Packs": 0},
-            {"wins": 3, "Gems": 200, "Packs": 0},
-            {"wins": 4, "Gems": 300, "Packs": 0},
-            {"wins": 5, "Gems": 400, "Packs": 0}, # + rare cards mechanism ignored for now or treated as packs?
-            {"wins": 6, "Gems": 450, "Packs": 0},
-            {"wins": 7, "Gems": 500, "Packs": 0, "PIP": 1}, 
+            {"wins": 2, "Gems": 75, "Packs": 1},
+            {"wins": 3, "Gems": 200, "Packs": 1},
+            {"wins": 4, "Gems": 300, "Packs": 1},
+            {"wins": 5, "Gems": 400, "Packs": 2}, # + rare cards mechanism ignored for now or treated as packs?
+            {"wins": 6, "Gems": 450, "Packs": 2},
+            {"wins": 7, "Gems": 500, "Packs": 3, "PIP": 1}, 
         ]
     },
     "アリーナ・ダイレクト (プレイブースター)": {

@@ -63,7 +63,7 @@ EVENT_PRESETS = {
         "max_losses": 3,
         "format": "BO1",
         "guaranteed_packs": 3,
-        "entry_fee": {"Gems": 3000},
+        "entry_fee": {"Gems": 3000, "Gold": 20000},
         "payouts": [
             {"wins": 0, "Gems": 0, "Packs": 0},
             {"wins": 1, "Gems": 0, "Packs": 0},
